@@ -1,0 +1,5 @@
+mongoAtlas id --> kishanCollabMern
+pass --> YWjcDYu2Sfic19DE
+
+
+mongodb+srv://<username>:<password>@cluster0.yjxak.mongodb.net/?retryWrites=true&w=majority
