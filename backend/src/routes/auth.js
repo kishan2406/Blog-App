@@ -1,5 +1,5 @@
 
-// const express = require("express");
+const express = require("express");
 // const router = express.Router();
 // or
 const router = require("express").Router();
@@ -36,28 +36,23 @@ router.post('/register',async(req,res)=>{
  
 router.post('/login', async(req, res)=>{
     try{
+      // console.log(req.body)
         const user  = await UserModel.findOne({username: req.body.username})
         
-        //  //if(!user)
-        // !user && res.status(400).json("Email or Password is Wrong !!")
-       
-        // const validated = await bcrypt.compare(req.body.password, user.password);
-        // // if(!validated) means after comparing
-        // !validated && res.status(400).json("Email or Password is Wrong !!")
-        if(!user){
-            return res.status(400).json("Email or Password is Wrong !!")
-        }
-
-         const validated = await bcrypt.compare(req.body.password, user.password);
-
-         if(!validated){
-            return res.status(400).json("Email or Password is Wrong !!")
+         if(!user){
+         return res.status(400).json("Email or Password is Wrong !!")
          }
-
+       
+        const validated = await bcrypt.compare(req.body.password, user.password);
+        // if(!validated) means after comparing
+        if(!validated){
+       return res.status(400).json("Email or Password is Wrong !!")
+        }
+       
         
-        const {password, ...others} = user;
+         const { password, ...others } = user._doc;
          // if all is well then return 
-         res.status(200),json(others);
+        return res.status(200).json(others);
   
     }catch(err){
         res.status(500).json(err);
@@ -66,3 +61,15 @@ router.post('/login', async(req, res)=>{
 
 
 module.exports = router;
+
+
+
+
+
+
+
+
+
+
+
+
