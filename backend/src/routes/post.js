@@ -19,43 +19,37 @@ router.post('/', async(req, res)=> {
 
     }catch(err){
          
-        res.status(5000).json(err)
+       return res.status(500).json(err)
         // return res.status(500).send({message:err.message})
     }
 });
 
 //UPDATE POST
 
-router.put('/:id', async(req, res)=>{
-    
-    try{
-        const post = await postModelfindById(req.params.id);
-        if(post.username === req.body.username) {
+router.put("/:id", async (req, res) => {
+    try {
+        
+      const post = await postModel.findById(req.params.id);
+      if (post.username === req.body.username) {
 
-        try{
-            const updatedPost = await postModel.findByIdAndUpdate(req.params.id,{
-
-                $set: req.body
-            },{new:true})
-
-                 res.status(200).json(updatedPost)
-
-             }catch(err){
-                res.status(500).json(err)
+        try {
+           
+          const updatedPost = await postModel.findByIdAndUpdate(req.params.id,{
+              $set: req.body,
+            },
+            { new: true }
+          );
+          res.status(200).json(updatedPost);
+        } catch (err) {
+         return res.status(500).json(err);
         }
-    
-       } else{
-
-            res.status(401).json("You can update only your post")
-        }
-    
-    
-
-    }catch(err){
-        res.status(500).json(err)
-     }
-    
-})
+      } else {
+       return res.status(401).json("You can update only your post!");
+      }
+    } catch (err) {
+     return res.status(500).json(err);
+    }
+  });
 
 //DELETE  POST
 router.delete('/:id', async(req, res)=>{
@@ -70,46 +64,47 @@ router.delete('/:id', async(req, res)=>{
                  res.status(200).json("Post has been deleted")
 
              }catch(err){
-                res.status(500).json(err)
+             return res.status(500).json(err)
         }
     
        } else{
 
-            res.status(401).json("You can delete only your post")
+            return res.status(401).json("You can delete only your post")
         }
     }catch(err){
-        res.status(500).json(err)
+       return res.status(500).json(err)
      }
     
 });
 
-//GET POST
+// //GET POST
 
 router.get('/:id', async(req, res)=>{
 
     try{
-        const user =  await postModel.findById(req.params.id);
+        const post =  await postModel.findById(req.params.id);
         res.status(200).json(post)
     }catch(err){
          
-        res.status(500).json(others)
+       return res.status(500).json(err)
     }
 });
 
-// GET ALL POSTS
-//Queries will be used
+// // GET ALL POSTS
+// //Queries will be used
 
 router.get('/', async(req, res)=>{
        const username = req.query.user
        const catName = req.query.category
        // above both line generate query--> ?user=peter  or ?category=music(it is just a example)
         //catName--> categoryName
+
     try{
         let posts;
         if(username){
             posts = await postModel.find({username:username})
         }else if(catName){
-            posts = await postMode.find({categories:{
+            posts = await postModel.find({categories:{
                $in:[catName] 
             }})
         }else{
@@ -119,7 +114,7 @@ router.get('/', async(req, res)=>{
         
     }catch(err){
          
-        res.status(500).json(others)
+       return res.status(500).json(others)
     }
 });
 
