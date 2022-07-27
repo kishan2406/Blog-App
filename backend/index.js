@@ -31,21 +31,25 @@ try{
 }
 
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-      cb(null, "images");
-    },
-    filename: (req, file, cb) => {
-      cb(null, req.body.name);
-    },
-  });
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, req.body.name);
+  },
+});
+// path.extname(file.originalname)
 //   req.body.name
 // cb--> callback function it will take care of aero
 
 
 const upload = multer({ storage: storage });
 app.post("/data/upload", upload.single("file"), (req, res) => {
-  res.status(200).json("File has been uploaded");
+
+ return res.status(200).json("File has been uploaded");
 });
+
+
 
 app.use("/data/auth",authRoute)
 app.use("/data/users",userRoute)
